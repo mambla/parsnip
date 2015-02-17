@@ -223,4 +223,4 @@ pip-log.txt
 *.dump
 test.txt
 train.txt
-data/positions.txt
+positions.txt
