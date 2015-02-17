@@ -216,4 +216,10 @@ pip-log.txt
 .mr.developer.cfg
 
 # Matlab
-.mat
+*.mat
+*.asv
+
+# Misc
+*.dump
+test.txt
+train.txt
