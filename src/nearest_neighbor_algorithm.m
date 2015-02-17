@@ -6,6 +6,7 @@ function [ algorithm ] = nearest_neighbor_algorithm( k, sigma)
 %TODO: use matlab knn
 %TODO: different types of weight vectors (rect for instance)
 %TODO: different sigma per snp
+%TODO: different algorithm per snp?
 
 algorithm.train = @train;
 algorithm.classify = @classify;
@@ -18,7 +19,7 @@ end
 function [ model ] = train(params, train, extracted_train, snp_positions, missing)
 
 model.k = params.k;
-model.weights = fspecial('gaussian', [201 1], params.sigma);
+model.weights = fspecial('gaussian', [size(extracted_train,2) 1], params.sigma);
 model.knn_mdls = cell(length(missing),1);
 
 for i = 1:length(missing)
@@ -45,8 +46,9 @@ end
 
 function [ mdl ] = train_single_snp_model(extracted_train_snp, k, weights)
 
-train_labels = extracted_train_snp(101, :);
-extracted_train_snp(101, :) = -1;
+middle = (size(extracted_train_snp,1) + 1 )/2;
+train_labels = extracted_train_snp(middle, :);
+extracted_train_snp(middle, :) = -1;
 
 extracted_train_snp = double(extracted_train_snp).*repmat(weights, 1, size(extracted_train_snp,2));
 

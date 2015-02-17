@@ -36,9 +36,10 @@ for i = 1:k
     extracted_test_set = perm_extracted_train(:, :, group_ranges(i):group_ranges(i+1)-1);
     
     % set SNPs in test set to -1  
-    ground_truth = squeeze(extracted_test_set(:, 101, :));
+    middle = (size(extracted_test_set,2) + 1 )/2;
+    ground_truth = squeeze(extracted_test_set(:, middle, :));
     test_set(missing, :) = -1;
-    extracted_test_set(:, 101, :) = -1;
+    extracted_test_set(:, middle, :) = -1;
     
     % train
     model = algorithm.train(...
