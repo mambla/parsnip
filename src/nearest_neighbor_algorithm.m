@@ -1,12 +1,12 @@
 function [ algorithm ] = nearest_neighbor_algorithm( k, sigma)
 
-%TODO: maybe weighted kNN, by position or index (e^-abs(Dist)), 0 weight
+%TODO: maybe weighted kNN, by position or index (e^-abs(Dist)), 0 weight  
 %for different chromosomes
 %TODO: try different distance metrics
 %TODO: use matlab knn
 %TODO: different types of weight vectors (rect for instance)
 %TODO: different sigma per snp
-%TODO: different algorithm per snp?
+%TODO: different algorithm per snp??
 
 algorithm.train = @train;
 algorithm.classify = @classify;
