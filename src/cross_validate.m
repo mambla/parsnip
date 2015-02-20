@@ -1,4 +1,4 @@
-function [ accuracy ] = cross_validate(...
+function [ accuracy, accuracyV ] = cross_validate(...
     algorithm, ...  % documentation...
     train, ...
     extracted_train, ...
@@ -13,6 +13,7 @@ function [ accuracy ] = cross_validate(...
 
 % Initialize average accuracy
 accuracy = 0;
+accuracyV = zeros(length(missing),1);
 
 train_size = size(train, 2);
 
@@ -50,12 +51,16 @@ for i = 1:k
         model, test_set, extracted_test_set, snp_positions, missing);
     
     % cumulate accuracy for average calculated at the end of the function
-    accuracy = accuracy + mean(mean(ytest == ground_truth));  
+    tmpError =  mean(ytest ==  ground_truth(1:size(missing,2),:),2);
+    accuracyV = accuracyV + tmpError;  
+    fprintf('KV Done: %d/%d \t avgError:%f\n', i, k, mean(tmpError));
+
  
 end
 
 % calculate average accuracy
-accuracy = accuracy / k;
+accuracyV = accuracyV / k;
+accuracy = mean(accuracyV);
 
 end
 
