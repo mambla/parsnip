@@ -1,6 +1,6 @@
 T = 5;
-radious = 30;
-ada = adaboost_algorithm(T,radious);
+radius = 30;
+ada = adaboost_algorithm(T,radius);
 
 K=4;
 %save time, run all the process only on snp 1 to <snp_to_test>

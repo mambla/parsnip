@@ -1,10 +1,10 @@
-function [ algorithm ] = adaboost_algorithm(T, Radious)
+function [ algorithm ] = adaboost_algorithm(T, radius)
 
 algorithm.train = @train;
 algorithm.classify = @classify;
 algorithm.description = sprintf('Adaboost, T = %d', T);
 algorithm.params.T = T;
-algorithm.params.Radious = Radious;
+algorithm.params.radius = radius;
 
 end
 
@@ -14,10 +14,10 @@ model.adaboost_0 = cell(length(missing),1);
 model.adaboost_1 = cell(length(missing),1);
 model.adaboost_2 = cell(length(missing),1);
 model.T = params.T;
-model.Radious = params.Radious;
+model.radius = params.radius;
 
 for i = 1:length(missing)
-    [ X, y ] = adaboost_init( extracted_train, i, params.Radious );
+    [ X, y ] = adaboost_init( extracted_train, i, params.radius );
     
     %0 detector
     model.adaboost_0{i} = TrainAdaboost2( X, y, 0, params.T);
@@ -37,7 +37,7 @@ ytest = zeros(length(missing), size(test,2));
 
 %for each snp
 for i = 1:length(missing)
-    [ X, ~ ] = adaboost_init( extracted_test, i, model.Radious );
+    [ X, ~ ] = adaboost_init( extracted_test, i, model.radius );
     [ ~, r0 ] = adaboostC2( X, model.adaboost_0{i} );
     [ ~, r1 ] = adaboostC2( X, model.adaboost_1{i} );
     [ ~, r2 ] = adaboostC2( X, model.adaboost_2{i} );

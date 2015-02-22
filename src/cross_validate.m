@@ -11,8 +11,7 @@ function [ accuracy, accuracyV ] = cross_validate(...
 
 % Take documentation from ex3 k_cross_validate...
 
-% Initialize average accuracy
-accuracy = 0;
+% Initialize accuracy vector
 accuracyV = zeros(length(missing),1);
 
 train_size = size(train, 2);
@@ -51,9 +50,9 @@ for i = 1:k
         model, test_set, extracted_test_set, snp_positions, missing);
     
     % cumulate accuracy for average calculated at the end of the function
-    tmpError =  mean(ytest ==  ground_truth(1:size(missing,2),:),2);
-    accuracyV = accuracyV + tmpError;  
-    fprintf('KV Done: %d/%d \t avgError:%f\n', i, k, mean(tmpError));
+    tmp_accuracy =  mean(ytest ==  ground_truth(1:size(missing,2),:),2);
+    accuracyV = accuracyV + tmp_accuracy;  
+    fprintf('Cross Validation Done: %d/%d \t Accuracy:%f\n', i, k, mean(tmp_accuracy));
 
  
 end
