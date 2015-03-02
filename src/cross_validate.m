@@ -50,7 +50,7 @@ for i = 1:k
         model, test_set, extracted_test_set, snp_positions, missing);
     
     % cumulate accuracy for average calculated at the end of the function
-    tmp_accuracy =  mean(ytest ==  ground_truth(1:size(missing,2),:),2);
+    tmp_accuracy =  mean(ytest ==  ground_truth(1:length(missing),:),2);
     accuracyV = accuracyV + tmp_accuracy;  
     fprintf('Cross Validation Done: %d/%d \t Accuracy:%f\n', i, k, mean(tmp_accuracy));
 

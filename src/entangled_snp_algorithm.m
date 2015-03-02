@@ -22,6 +22,8 @@ if params.dim_radius == 0
     params.dim_radius = middle - 1;
 end
 
+model.dim_radius = params.dim_radius;
+
 extracted_train = extracted_train(:,middle-params.dim_radius:middle+params.dim_radius,:);
 
 for i = 1:length(missing)
@@ -34,7 +36,7 @@ end
 
 function [index, perm] = find_entangled_snp(extracted_train, weights)
 
-all_perms = perms([0 1 2]);
+all_perms = perms(0:2); % unique(combnk([0:2 0:2 0:2],3),'rows'); % 
 indices = zeros(size(all_perms,1),1);
 errors = zeros(size(all_perms,1),1);
 
@@ -80,6 +82,8 @@ function [ ytest ] = classify(model, test, extracted_test, snp_positions, missin
 
 ytest = zeros(length(missing), size(test,2));
 
+middle = (size(extracted_test,2) + 1 )/2;
+extracted_test = extracted_test(:,middle-model.dim_radius:middle+model.dim_radius,:);
 extracted_test = changem(extracted_test, [3 4 5], [0 1 2]);
 
 for i = 1:length(missing)

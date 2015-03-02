@@ -1,8 +1,8 @@
-function [ algorithm ] = svm_algorithm(svm_options, dim_radius)
+function [ algorithm ] = svm_algorithm3(svm_options, dim_radius)
 
 algorithm.train = @train;
 algorithm.classify = @classify;
-algorithm.description = sprintf('svm, options = %s', svm_options);
+algorithm.description = sprintf('svm, options = %s, dim_radius = %d', svm_options, dim_radius);
 algorithm.params.svm_options = svm_options;
 algorithm.params.dim_radius = dim_radius;
 
@@ -23,7 +23,7 @@ for i = 1:length(missing)
         squeeze(extracted_train(i,:,:)), ...
         params.svm_options);
     
-    if mod(i,50) == 0
+    if mod(i,10) == 0
         fprintf('Done: %d/%d \n', i, length(missing));
     end
 end
@@ -36,7 +36,9 @@ middle = (size(extracted_train_snp,1) + 1 )/2;
 train_labels = extracted_train_snp(middle, :);
 extracted_train_snp(middle, :) = -1;
 
-model = svmtrain(double(train_labels)', double(extracted_train_snp)', svm_options);
+value_counts = [sum(extracted_train_snp==0);sum(extracted_train_snp==1);sum(extracted_train_snp==2)];
+
+model = svmtrain(double(train_labels)', double(value_counts)', svm_options);
 
 end
 
@@ -50,7 +52,10 @@ extracted_test = extracted_test(:,middle-model.dim_radius:middle+model.dim_radiu
 
 for i = 1:length(missing)
     extracted_test_snp = squeeze(extracted_test(i,:,:));
-    ytest(i,:) = svmpredict(ytest(i,:)', double(extracted_test_snp'), model.svm_models{i}, '-q')';
+    
+    value_counts = [sum(extracted_test_snp==0);sum(extracted_test_snp==1);sum(extracted_test_snp==2)];
+
+    ytest(i,:) = svmpredict(ytest(i,:)', double(value_counts'), model.svm_models{i}, '-q')';
 end
 
 end

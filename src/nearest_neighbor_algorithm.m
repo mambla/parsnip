@@ -1,4 +1,4 @@
-function [ algorithm ] = nearest_neighbor_algorithm( k, sigma)
+function [ algorithm ] = nearest_neighbor_algorithm( k, sigma, mask)
 
 %TODO: maybe weighted kNN, by position or index (e^-abs(Dist)), 0 weight  
 %for different chromosomes
@@ -13,13 +13,14 @@ algorithm.classify = @classify;
 algorithm.description = sprintf('%d-NN, sigma=%d', k, sigma);
 algorithm.params.k = k;
 algorithm.params.sigma = sigma;
+algorithm.params.mask = mask;
 
 end
 
 function [ model ] = train(params, train, extracted_train, snp_positions, missing)
 
 model.k = params.k;
-model.weights = fspecial('gaussian', [size(extracted_train,2) 1], params.sigma);
+model.weights = fspecial('gaussian', [size(extracted_train,2) 1], params.sigma) .* params.mask;
 model.knn_mdls = cell(length(missing),1);
 
 for i = 1:length(missing)
@@ -27,6 +28,7 @@ for i = 1:length(missing)
         squeeze(extracted_train(i,:,:)), ...
         model.k, ...
         model.weights);
+    
 end
 
 end
