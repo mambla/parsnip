@@ -1,21 +1,46 @@
 function [ ytest, chosen_algorithms, accuracy_vector, accuracy ] = go()
+% chooses the best algorithm for each snp (using 6-fold cross validation)
+% and estimates the missing SNPs in the test set using the chosen
+% algorithms
+%
+% this function returns and saves ytest (in ytest.mat) , the chosen_algorithms, an
+% accuracy_vector that contains the cross validation accuracy of the
+% algorithm chosen for each SNP, and the average accuracy (all in
+% chosen_algorithms.mat)
 
+% Add folders to search path
+addpath 'algorithms';
+addpath '../data';
+addpath '../results';
+
+if ispc()
+    addpath '../bin/libsvm/windows';
+else
+    addpath '../bin/libsvm/linux';
+end
+
+% load data
 load dataforproject.mat
 load train.mat;
 load test.mat;
-    
+
+% if algorithms were previously chosen per SNP, load the previously chosen
+% algorithms, otherwise, find the best algorithm per SNP
 if exist('chosen_algorithms.mat','file')
     load chosen_algorithms.mat
 else
     [chosen_algorithms, accuracy_vector, accuracy] = choose_algorithm_per_snp(...
         train, extracted_train, missing);
     
+    % save for next time
     save chosen_algorithms.mat chosen_algorithms accuracy_vector accuracy
 end
 
+% initialize empty result
 ytest = zeros(length(missing), size(test,2));
 
 for i = 1:length(missing)
+    % train and then classify using previously chosen algorithms
     current_algorithm = chosen_algorithms(i);
     
     current_model = current_algorithm.train(...
@@ -25,6 +50,7 @@ for i = 1:length(missing)
         current_model, test, extracted_test(i,:,:), 0, missing(i));
 end
 
+% save result
 save ytest.mat ytest
 
 end
@@ -49,6 +75,10 @@ chosen_algorithms = algorithm_options(algo_index_per_snp);
 end
 
 function [algorithm_options] = generate_algorithm_options()
+
+% initialize a vector of the algorithms (with different paramters) from which we wish to choose
+% the algorithm parameters were chosen as parameters that previously
+% produced good results
 
 algorithm_options = [...
     svm_algorithm('-t 2 -g 0.007 -c 100 -q',9), ...

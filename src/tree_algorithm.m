@@ -1,15 +1,14 @@
 function [ algorithm ] = tree_algorithm(dim_radius, extra_param)
 
-algorithm.train = @train;
-algorithm.classify = @classify;
+algorithm.train = @tree_train;
+algorithm.classify = @tree_classify;
 algorithm.description = sprintf('decission tree, options = %s', extra_param);
 algorithm.params.dim_radius = dim_radius;
 algorithm.params.extra_param = extra_param;
 
 end
 
-% successful params: svm_algorithm('-t 2 -g 0.007 -c 100 -q',20)
-function [ model ] = train(params, train, extracted_train, snp_positions, missing)
+function [ model ] = tree_train(params, train, extracted_train, snp_positions, missing)
 
 n = length(missing);
 
@@ -46,7 +45,7 @@ model = prune(model,'Level',2);
 
 end
 
-function [ ytest ] = classify(model, test, extracted_test, snp_positions, missing)
+function [ ytest ] = tree_classify(model, test, extracted_test, snp_positions, missing)
 
 snps = length(missing);
 peoples = size(extracted_test,3);
