@@ -1,9 +1,21 @@
-addpath('.');
-addpath('../data');
-addpath('../bin');
-addpath('../bin/windows');
+% Add folders to search path
+addpath 'algorithms';
+addpath 'diagnostics';
 
-load('dataforproject.mat');
+addpath('.');
+addpath '../data';
+addpath '../results';
+addpath '../bin';
+addpath '../bin/windows';
+
+if ispc()
+    addpath '../bin/libsvm/windows';
+else
+    addpath '../bin/libsvm/linux';
+end
+
+% load data
+load dataforproject.mat
 
 if ~exist('../data/train.mat','file')
     train = dlmread('../data/train.txt');
