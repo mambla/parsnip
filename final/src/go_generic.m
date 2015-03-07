@@ -6,7 +6,7 @@ setup();
 
 fprintf('Using algorithm: %s\n', algorithm.description);
     
-% train algorithm
+% train algorithm, snp positions aren't used in any algorithm (the 0 argument)
 model = algorithm.train(algorithm.params, train, extracted_train, 0, missing);   
 
 % estimate missing SNPs

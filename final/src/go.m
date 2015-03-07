@@ -55,7 +55,8 @@ accuracy_matrix = zeros(length(missing), length(algorithm_options));
 % calculate cross validation accuracy for each algorithm on all SNPs
 for i = 1:length(algorithm_options)
     fprintf('Testing algorithm: %s \n', current_algorithm.description);
-
+    
+    % snp positions are not used in any algorithm (the 0 argument)
     [~, current_accuracy_vector] = cross_validate(...
         algorithm_options(i), train, extracted_train, 0, missing, 6);
     
