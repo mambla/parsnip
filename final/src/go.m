@@ -13,14 +13,14 @@ setup();
 
 % if algorithms were previously chosen per SNP, load the previously chosen
 % algorithms, otherwise, find the best algorithm per SNP
-if exist('chosen_algorithms.mat','file')
+if exist('../results/chosen_algorithms.mat','file')
     load chosen_algorithms.mat
 else
     [chosen_algorithms, accuracy_vector, accuracy] = choose_algorithm_per_snp(...
         train, extracted_train, missing);
     
     % save for next time
-    save chosen_algorithms.mat chosen_algorithms accuracy_vector accuracy
+    save('../results/chosen_algorithms.mat','chosen_algorithms','accuracy_vector','accuracy');
 end
 
 % initialize empty result
@@ -38,7 +38,7 @@ for i = 1:length(missing)
 end
 
 % save result
-save ytest.mat ytest
+save('../results/ytest.mat','ytest');
 
 end
 
