@@ -38,6 +38,11 @@ for i = 1:k
     % set SNPs in test set to -1  
     middle = (size(extracted_test_set,2) + 1 )/2;
     ground_truth = squeeze(extracted_test_set(:, middle, :));
+    
+    if size(extracted_test_set,1) == 1
+        ground_truth = ground_truth';
+    end
+    
     test_set(missing, :) = -1;
     extracted_test_set(:, middle, :) = -1;
     

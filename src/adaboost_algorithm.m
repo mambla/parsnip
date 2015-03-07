@@ -1,14 +1,14 @@
 function [ algorithm ] = adaboost_algorithm(T, radius)
 
-algorithm.train = @train;
-algorithm.classify = @classify;
+algorithm.train = @adaboost_train;
+algorithm.classify = @adaboost_classify;
 algorithm.description = sprintf('Adaboost, T = %d', T);
 algorithm.params.T = T;
 algorithm.params.radius = radius;
 
 end
 
-function [ model ] = train(params, train, extracted_train, snp_positions, missing)
+function [ model ] = adaboost_train(params, train, extracted_train, snp_positions, missing)
 
 model.adaboost_0 = cell(length(missing),1);
 model.adaboost_1 = cell(length(missing),1);
@@ -31,7 +31,7 @@ end
 
 end
 
-function [ ytest ] = classify(model, test, extracted_test, snp_positions, missing)
+function [ ytest ] = adaboost_classify(model, test, extracted_test, snp_positions, missing)
 
 ytest = zeros(length(missing), size(test,2));
 

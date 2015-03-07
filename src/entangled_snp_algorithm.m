@@ -1,13 +1,13 @@
 function [ algorithm ] = entangled_snp_algorithm( dim_radius )
 
-algorithm.train = @train;
-algorithm.classify = @classify;
+algorithm.train = @entangled_snp_train;
+algorithm.classify = @entangled_snp_classify;
 algorithm.description = sprintf('Entangled-Snp, dim_radius = %d', dim_radius);
 algorithm.params.dim_radius = dim_radius;
 
 end
 
-function [ model ] = train(params, train, extracted_train, snp_positions, missing, weights)
+function [ model ] = entangled_snp_train(params, train, extracted_train, snp_positions, missing, weights)
 
 if nargin < 6
     weights = ones(size(extracted_train,3), 1) / size(extracted_train,3);
@@ -78,7 +78,7 @@ error_rates = sum(diff_matrix, 2);
 
 end
 
-function [ ytest ] = classify(model, test, extracted_test, snp_positions, missing)
+function [ ytest ] = entangled_snp_classify(model, test, extracted_test, snp_positions, missing)
 
 ytest = zeros(length(missing), size(test,2));
 

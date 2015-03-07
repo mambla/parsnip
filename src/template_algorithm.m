@@ -1,21 +1,21 @@
-function [ algorithm ] = template_algorithm( )
+function [ algorithm ] = template_algorithm(const)
 
-algorithm.train = @train;
-algorithm.classify = @classify;
+algorithm.train = @template_train;
+algorithm.classify = @template_classify;
 algorithm.description = sprintf('template');
-algorithm.params = 0;
+algorithm.params.const = const;
 
 end
 
-function [ model ] = train(params, train, extracted_train, snp_positions, missing)
+function [ model ] = template_train(params, train, extracted_train, snp_positions, missing)
 
-model = 0;
+model.const = params.const;
 
 end
 
-function [ ytest] = classify(model, test, extracted_test, snp_positions, missing)
+function [ ytest] = template_classify(model, test, extracted_test, snp_positions, missing)
 
-ytest = ones(length(missing), size(test,2));
+ytest = ones(length(missing), size(test,2)) * model.const;
 
 end
 
