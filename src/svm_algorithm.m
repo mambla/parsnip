@@ -1,15 +1,15 @@
 function [ algorithm ] = svm_algorithm(svm_options, dim_radius)
 
-algorithm.train = @train;
-algorithm.classify = @classify;
+algorithm.train = @svm_train;
+algorithm.classify = @svm_classify;
 algorithm.description = sprintf('svm, options = %s', svm_options);
 algorithm.params.svm_options = svm_options;
 algorithm.params.dim_radius = dim_radius;
 
 end
 
-% successful params: svm_algorithm('-t 2 -g 0.007 -c 100 -q',20)
-function [ model ] = train(params, train, extracted_train, snp_positions, missing)
+% successful params: svm_algorithm('-t 2 -g 0.007 -c 100 -q',9)
+function [ model ] = svm_train(params, train, extracted_train, snp_positions, missing)
 
 model.svm_models = cell(length(missing),1);
 model.dim_radius = params.dim_radius;
@@ -40,7 +40,7 @@ model = svmtrain(double(train_labels)', double(extracted_train_snp)', svm_option
 
 end
 
-function [ ytest ] = classify(model, test, extracted_test, snp_positions, missing)
+function [ ytest ] = svm_classify(model, test, extracted_test, snp_positions, missing)
 
 ytest = zeros(length(missing), size(test,2));
 

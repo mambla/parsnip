@@ -8,8 +8,8 @@ function [ algorithm ] = nearest_neighbor_algorithm( k, sigma, mask)
 %TODO: different sigma per snp
 %TODO: different algorithm per snp??
 
-algorithm.train = @train;
-algorithm.classify = @classify;
+algorithm.train = @nearest_neighbor_train;
+algorithm.classify = @nearest_neighbor_classify;
 algorithm.description = sprintf('%d-NN, sigma=%d', k, sigma);
 algorithm.params.k = k;
 algorithm.params.sigma = sigma;
@@ -17,7 +17,7 @@ algorithm.params.mask = mask;
 
 end
 
-function [ model ] = train(params, train, extracted_train, snp_positions, missing)
+function [ model ] = nearest_neighbor_train(params, train, extracted_train, snp_positions, missing)
 
 model.k = params.k;
 model.weights = fspecial('gaussian', [size(extracted_train,2) 1], params.sigma) .* params.mask;
@@ -33,7 +33,7 @@ end
 
 end
 
-function [ ytest ] = classify(model, test, extracted_test, snp_positions, missing)
+function [ ytest ] = nearest_neighbor_classify(model, test, extracted_test, snp_positions, missing)
 
 ytest = zeros(length(missing), size(test,2));
 
@@ -54,7 +54,7 @@ extracted_train_snp(middle, :) = -1;
 
 extracted_train_snp = double(extracted_train_snp).*repmat(weights, 1, size(extracted_train_snp,2));
 
-mdl = fitcknn(extracted_train_snp', train_labels','NumNeighbors',k);%, 'Distance', 'correlation');
+mdl = fitcknn(extracted_train_snp', train_labels','NumNeighbors',k); %, 'Distance', 'jaccard');
 
 end
 
