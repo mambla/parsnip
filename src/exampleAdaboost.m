@@ -1,8 +1,8 @@
-T = 10;
-radius = 40;
+T = 9;
+radius = 30;
 ada = adaboost_algorithm(T,radius);
 
-K=3;
+K=6;
 %save time, run all the process only on snp 1 to <snp_to_test>
 snp_to_test = 300;
 %the adaboost doesn't use the all train or all test. only the extracted

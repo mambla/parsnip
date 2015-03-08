@@ -1,5 +1,10 @@
 function [ algorithm ] = adaboost_algorithm(T, radius)
 
+% <T> iterations adaboost upon the <radius> SNPs before and after
+% the one we are looking for
+% weak classifiers: does snp in index i has value x?
+% T and radius are given as parameters
+
 algorithm.train = @adaboost_train;
 algorithm.classify = @adaboost_classify;
 algorithm.description = sprintf('Adaboost, T = %d', T);
@@ -10,6 +15,7 @@ end
 
 function [ model ] = adaboost_train(params, train, extracted_train, snp_positions, missing)
 
+%initialize model
 model.adaboost_0 = cell(length(missing),1);
 model.adaboost_1 = cell(length(missing),1);
 model.adaboost_2 = cell(length(missing),1);
