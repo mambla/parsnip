@@ -26,11 +26,11 @@ for i = 1:length(missing)
     [ X, y ] = adaboost_init( extracted_train, i, params.radius );
     
     %0 detector
-    model.adaboost_0{i} = TrainAdaboost2( X, y, 0, params.T);
+    model.adaboost_0{i} = TrainAdaboost( X, y, 0, params.T);
     %1 detector
-    model.adaboost_1{i} = TrainAdaboost2( X, y, 1, params.T);
+    model.adaboost_1{i} = TrainAdaboost( X, y, 1, params.T);
     %2 detector
-    model.adaboost_2{i} = TrainAdaboost2( X, y, 2, params.T);
+    model.adaboost_2{i} = TrainAdaboost( X, y, 2, params.T);
     
     fprintf('Done: %d/%d \n', i, length(missing));
 end
@@ -44,9 +44,9 @@ ytest = zeros(length(missing), size(test,2));
 %for each snp
 for i = 1:length(missing)
     [ X, ~ ] = adaboost_init( extracted_test, i, model.radius );
-    [ ~, r0 ] = adaboostC2( X, model.adaboost_0{i} );
-    [ ~, r1 ] = adaboostC2( X, model.adaboost_1{i} );
-    [ ~, r2 ] = adaboostC2( X, model.adaboost_2{i} );
+    [ ~, r0 ] = adaboostC( X, model.adaboost_0{i} );
+    [ ~, r1 ] = adaboostC( X, model.adaboost_1{i} );
+    [ ~, r2 ] = adaboostC( X, model.adaboost_2{i} );
     
     % in total: check who had maximal r. and give this label
     [~, max_r_indexes] = max([r0 r1 r2],[],2);
@@ -63,7 +63,7 @@ end
 
 
 
-function [ y_classifier_result, r ] = adaboostC2( X, Model )
+function [ y_classifier_result, r ] = adaboostC( X, Model )
 % this run the classifier on the test samples.
 % return as well r - how mutch the classifier is sure about it's answer
 
@@ -89,7 +89,7 @@ end
 
 
 
-function [ Model ] = TrainAdaboost2( X, y, targetClass, nRounds)
+function [ Model ] = TrainAdaboost( X, y, targetClass, nRounds)
 %X's column is sample. c's row is feature.
 % y labels vector (0/1/2)
 % target=0/1/2. we would build classifier that detect this value or not
