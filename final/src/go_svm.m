@@ -4,4 +4,8 @@ function [ ytest ] = go_svm()
 % the one we are looking for
 ytest = go_generic(svm_algorithm('-t 2 -g 0.007 -c 100 -q', 9));
 
+% save result
+mkdir('../results/svm/');
+save('../results/svm/ytest.mat','ytest')
+
 end

@@ -4,4 +4,8 @@ function [ ytest ] = go_nearest_neighbor()
 % euclidean distance metric
 ytest = go_generic(nearest_neighbor_algorithm(3, 3, 'euclidean'));
 
+% save result
+mkdir('../results/nearest_neighbor/');
+save('../results/nearest_neighbor/ytest.mat','ytest')
+
 end

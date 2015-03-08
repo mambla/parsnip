@@ -5,4 +5,8 @@ function [ ytest ] = go_tree()
 %prune to level 2
 ytest = go_generic(tree_algorithm(8,0));
 
+% save result
+mkdir('../results/tree/');
+save('../results/tree/ytest.mat','ytest')
+
 end

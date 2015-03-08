@@ -1,12 +1,9 @@
 % Add folders to search path
 addpath 'algorithms';
-addpath 'diagnostics';
 
 addpath('.');
 addpath '../data';
 addpath '../results';
-addpath '../bin';
-addpath '../bin/windows';
 
 if ispc()
     addpath '../bin/libsvm/windows';

@@ -12,7 +12,4 @@ model = algorithm.train(algorithm.params, train, extracted_train, 0, missing);
 % estimate missing SNPs
 ytest = algorithm.classify(model, test, extracted_test, 0, missing);
     
-% save result
-save ytest.mat ytest
-
 end

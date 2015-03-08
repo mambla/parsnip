@@ -6,4 +6,8 @@ function [ ytest ] = go_svm2()
 
 ytest = go_generic(svm_algorithm2('-t 2 -g 0.01 -c 100 -q', 30, 10));
 
+% save result
+mkdir('../results/svm2/');
+save('../results/svm2/ytest.mat','ytest')
+
 end
